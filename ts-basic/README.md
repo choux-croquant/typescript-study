@@ -7,3 +7,4 @@ TS는 JS의 superset, TS는 컴파일 과정을 거치며 다른 저수준 언�
 
 ### TS기본 타입, 유니언 타입, Type Alias, Generics
 basic.ts에 기본 타입 사용법 작성
++ never type에 대한 참고자료 : https://ui.toast.com/weekly-pick/ko_20220323

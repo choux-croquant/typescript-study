@@ -24,6 +24,7 @@ person = {
   name: 'Choux',
   age: 26
 }
+
 // 아래와 같이 다른 value타입이면 에러
 // person = {
 //   isEmployee: true
@@ -37,6 +38,19 @@ people = [person, person, person]
 // 타입 추론, TS는 따로 타입지정을 하지 않아도 할당된 값의 자료형을 그 변수의 타입으로 추론한다.
 let course = 'React-TS'; // 문자열로 추론
 course = 123 // 에러!
+
+
+// any - 타입체크를 시행하지 않고 아무 값이나 할당할 수 있도록 하는 타입, 임시로 사용할 수는 있겠지만 TS를 쓰는 의미가 없어지므로 지양한다.
+let anyValue: any;
+
+
+// unknown - any타입과 동일하게 모든 값을 할당할 수 있지만, 타입체크를 추가로 시행하지 전에는 프로퍼티를 참조하거나 연산을 할 수 없다. > any보단 조금 낫다.
+let unknownValue: unknown = 'unknown';
+console.log(unknownValue.length) // 타입체크를 추가로 진행하지 않을 시 에러 발생
+
+if (typeof unknownValue === 'string') {
+  console.log(unknownValue.length) // if문으로 타입체크 시 정상작동
+}
 
 
 // Union type, 두 개 이상의 타입을 지정할 수 있도록 하는 옵션
@@ -59,9 +73,15 @@ let people2: Person[];
 function add(a: number, b: number): number {
   return a + b;
 }
-// 반환값이 없는 경우, void로 지정 가능
+// 반환값이 없는 경우, void로 지정 가능, void로 지정할 경우 반환타입에 대해 신경쓰지 않겠다는 의미로 생각할 수 있다.
+// 예를들어 void타입으로 반환하고 return값으로 string이나 boolean등을 반환하여도 에러가 발생하지 않는다.
 function consoleprint(value: any): void {
   console.log(value)
+}
+// never 타입 - 반환값의 집합이 공집합인 경우로, 반환히 불가능한 경우 의도적으로 설정할 수 있다.
+// throw new Error와 같이 스크립트가 끝나기 전에 항상 에러를 반환할 경우나, 절대 발생할 수 없는 else구분의 내부 등의 경우 리턴값이 존재할 수 없다.
+function throwError(message: string, code: number): never {
+  throw { message: message, code: code}
 }
 
 
