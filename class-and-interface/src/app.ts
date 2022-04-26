@@ -37,13 +37,33 @@ myFirstItemList.consoleItemsNum()
 
 // class 상속하기, extends를 통해 상속.
 class RecommendedItemList extends ItemList {
-  constructor(items: string[], public likes: number[]) {
+  private bestItem: string
+
+  // get키워드로 private 속성에 대한 getter함수를 만들 수 있다.
+  get mostRecommendedItem() {
+    if (this.bestItem) {
+      return this.bestItem
+    } else {
+      throw new Error('No BestItem')
+    }
+  }
+
+  // set키워드로
+  set mostRecommendedItem(value: string){
+    this.bestItem = value
+  }
+
+  constructor(items: string[], public likes: number[], bestItem: string) {
     // 상속받는 기본 클래스의 생성자를 호출하는 메서드
     super('Recommend', items)
     this.likes = likes
+    this.bestItem = bestItem
   }
 }
 
-const myRecommendItemList = new RecommendedItemList(['item4', 'item5', 'item6'], [4, 5, 6])
+const myRecommendItemList = new RecommendedItemList(['item4', 'item5', 'item6'], [4, 5, 6], 'best')
 console.log(myRecommendItemList)
 myRecommendItemList.consoleItemsNum()
+console.log(myRecommendItemList.mostRecommendedItem)
+myRecommendItemList.mostRecommendedItem = 'New Best Item'
+console.log(myRecommendItemList.mostRecommendedItem)
