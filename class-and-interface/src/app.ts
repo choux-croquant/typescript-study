@@ -1,7 +1,8 @@
+// 기본적인 class 선언하기
 class ItemList {
-  constructor(private name: string, private items: string[]) {
-    this.name = name;
-    this.items = []
+  constructor(private readonly name: string, protected items: string[]) {
+    this.name = name
+    this.items = items
   }
   // this에 더미 타입을 추가하는 것을 통해 외부에서 유사한 객체가 존재할 때 발생할 수 있는 에러에 대해 어느정도 대책을 세울 수 있다.
   consoleListName(this: ItemList) {
@@ -32,3 +33,17 @@ myFirstItemList.addItem('item2')
 myFirstItemList.addItem('item3')
 
 myFirstItemList.consoleItemsNum()
+
+
+// class 상속하기, extends를 통해 상속.
+class RecommendedItemList extends ItemList {
+  constructor(items: string[], public likes: number[]) {
+    // 상속받는 기본 클래스의 생성자를 호출하는 메서드
+    super('Recommend', items)
+    this.likes = likes
+  }
+}
+
+const myRecommendItemList = new RecommendedItemList(['item4', 'item5', 'item6'], [4, 5, 6])
+console.log(myRecommendItemList)
+myRecommendItemList.consoleItemsNum()
