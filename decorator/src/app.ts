@@ -74,11 +74,11 @@ function Log4(target: any, name: string | Symbol, position: number) {
 }
 
 class Product {
-  @Log
+  @Log // 프로퍼티에 데코레이터를 선언 가능
   title: string;
   private _price: number;
 
-  @Log2
+  @Log2 // 접근자(getter, setter)에 데코레이터 선언 가능
   set price(val: number) {
     if (val > 0) {
       this._price = val;
@@ -92,8 +92,8 @@ class Product {
     this._price = p;
   }
 
-  @Log3
-  getPriceWithTax(@Log4 tax: number) {
+  @Log3 // 메서드에 데코레이터 선언 가능
+  getPriceWithTax(@Log4 tax: number) { // 함수 파라미터에도 데코레이터 선언 가능
     return this._price * (1 + tax);
   }
 }
