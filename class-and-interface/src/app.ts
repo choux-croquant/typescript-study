@@ -74,3 +74,19 @@ interface Rated {
 interface RatedItem extends Item, Rated {
   recommended: boolean
 }
+
+
+// interface로 함수의 타입 정의하기
+interface AddFn {
+  (a: number, b: number): number
+}
+
+let add: AddFn
+
+add = (n1: number, n2: number) => {
+  return n1 + n2
+}
+// 함수에 인터페이스를 바로 설정할 경우 매개변수와 리턴 타입을 생략할 수 있다.
+const addNumber: AddFn = (n1, n2) => {
+  return n1 + n2
+}
