@@ -1,69 +1,76 @@
-// 기본적인 class 선언하기
-class ItemList {
-  constructor(private readonly name: string, protected items: string[]) {
-    this.name = name
-    this.items = items
-  }
-  // this에 더미 타입을 추가하는 것을 통해 외부에서 유사한 객체가 존재할 때 발생할 수 있는 에러에 대해 어느정도 대책을 세울 수 있다.
-  consoleListName(this: ItemList) {
-    console.log('ListName: ' + this.name)
-  }
+// 기초 interface생성, interface에는 구체적인 값을 할당할 수 없다.
+// 객체의 type-check를 위해 주로 사용되며 객체를 다루는 경우 type보다 interface를 자주 사용한다.
+interface Person {
+  name: string
+  age: number
 
-  addItem(item: string) {
-    this.items.push(item)
-  }
+  greet(phrase: string): void;
+}
 
-  consoleItemsNum() {
-    console.log(this.items.length)
-    console.log(this.items)
+let user1: Person
+
+user1 = {
+  name: 'choux',
+  age: 26,
+  greet(phrase: string) {
+    console.log(phrase + this.name)
   }
 }
 
-const myFirstItemList = new ItemList('FirstItemList', [])
 
-const someItemList = { consoleListName: myFirstItemList.consoleListName }
-
-myFirstItemList.consoleListName()
-// this에 타입을 지정하지 않았다면 아래의 consoleListName()메서드는 정상적으로 동작하는 것 처럼 보인다.
-// 현재는 name속성도 추가하여 ItemList의 형식과 동일하게 만들어주어야 동작한다.
-// someItemList.consoleListName()
-
-myFirstItemList.addItem('item1')
-myFirstItemList.addItem('item2')
-myFirstItemList.addItem('item3')
-
-myFirstItemList.consoleItemsNum()
+// readonly속성을 통해 객체의 요소가 단 한번만 설정되어야 하며 읽기 전용으로 사용되어야 함을 선언할 수 있다.
+interface Greetable {
+  readonly name: string
+  greet(phrase: string): void
+}
 
 
-// class 상속하기, extends를 통해 상속.
-class RecommendedItemList extends ItemList {
-  private bestItem: string
+// interface와 typa Alias의 차이는? interface는 중복 선언하여 인터페이스를 병합할 수 있다.
+// 또한 implements키워드를 통해 class구현 시 여러 interface를 한 번에 정의할 수 있다.
+interface testPerson {
+  name: string
+}
 
-  // get키워드로 private 속성에 대한 getter함수를 만들 수 있다.
-  get mostRecommendedItem() {
-    if (this.bestItem) {
-      return this.bestItem
-    } else {
-      throw new Error('No BestItem')
-    }
+interface testPerson {
+  age: number
+}
+
+let testUser: testPerson
+// testPerson interface가 병합되어 name만 설정할 경우 에러발생
+// testUser = {
+//   name: 'choux'
+// }
+
+interface Named {
+  readonly name: string
+}
+
+// 동시에 여러 개의 interface를 구현하고 있는지 체크하는 예시
+class Person implements Greetable, Named {
+  name: string;
+  age = 26
+
+  constructor(n: string) {
+    this.name = n
   }
 
-  // set키워드로
-  set mostRecommendedItem(value: string){
-    this.bestItem = value
-  }
-
-  constructor(items: string[], public likes: number[], bestItem: string) {
-    // 상속받는 기본 클래스의 생성자를 호출하는 메서드
-    super('Recommend', items)
-    this.likes = likes
-    this.bestItem = bestItem
+  greet(phrase: string): void {
+    console.log(phrase + this.name)
   }
 }
 
-const myRecommendItemList = new RecommendedItemList(['item4', 'item5', 'item6'], [4, 5, 6], 'best')
-console.log(myRecommendItemList)
-myRecommendItemList.consoleItemsNum()
-console.log(myRecommendItemList.mostRecommendedItem)
-myRecommendItemList.mostRecommendedItem = 'New Best Item'
-console.log(myRecommendItemList.mostRecommendedItem)
+
+// interface도 extends키워드를 통해 상속을 통한 확장을 할 수 있다. class로 구현 시 상속받은 interface의 속성들까지 필수로 구현해주어야 한다.
+// interface는 class와 달리 상속을 여러 개 받을 수 있다.
+interface Item {
+  itemName: string
+  itemPrice: number
+}
+
+interface Rated {
+  rate: number
+}
+
+interface RatedItem extends Item, Rated {
+  recommended: boolean
+}
