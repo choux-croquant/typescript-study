@@ -123,14 +123,15 @@ class Printer {
   }
 }
 
+// 메서드 데코레이터를 통해 getter와 바인딩했기 때문에 메시지가 나오는 것을 확인할 수 있다.
 const p = new Printer();
 p.showMessage();
 
 const button = document.querySelector('button')!;
 button.addEventListener('click', p.showMessage);
 
-// ---
 
+// 입력 폼을 검증하는 데코레이터 작성하기
 interface ValidatorConfig {
   [property: string]: {
     [validatableProp: string]: string[]; // ['required', 'positive']

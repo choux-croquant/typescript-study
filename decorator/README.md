@@ -25,6 +25,30 @@ function color(value: string) { // 데코레이터 팩토리
 }
 ```
 
+### 데코레이터의 실행 순서
+데코레이터를 2개 이상 선언할 경우 데코레이터 함수의 평가는 먼저 선언한 것부터, 실행은 선언하는 타겟에 가까운 데코레이터부터 진행된다.
+```typescript
+@Logger('LOGGING')
+@WithTemplate('<h1>My Person Object</h1>', 'app')
+class Person {
+  name = 'Choux';
+
+  constructor() {
+    console.log('Creating person object...');
+  }
+}
+```
+
+위와 같은 경우 평가는 Logger > WithTemplate순으로 진행되고 실행은 WithTemplate > Logger의 순으로 진행된다.
+평가 순서는 JS의 런타임 평가순서에 의해 결정되므로 자연스럽지만 실행이 반대인 것은 헷갈릴 수 있다.
+이는 데코레이터가 descriptor function의 syntactic sugar이기 때문이다. 즉 다음과 같은 고차 함수의 형태로 전환되기 때문이다.
+
+```typescript
+// 의사코드
+extendedConstructor = Logger(WithTemplate(originalConstructor))
+```
+
+
 ### 데코레이터의 종류
 데코레이터가 어느 요소 앞에 선언되느냐에 따라서 다음과 같이 구분할 수 있다.
 + Class Decorator : 클래스 선언 전에 선언되는 데코레이터, 클래스 constructor에 적용되며 constructor가 유일한 인자. 데코레이터를 통해 클래스의 프로퍼티나 메서드를 재정의 할 수 있으며 이 때 재정의한 프로퍼티와 메서드는 사용자 정의 프로퍼티와 메서드보다 우선 순위가 높다.
